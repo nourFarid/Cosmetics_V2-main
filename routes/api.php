@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ProductsRequestsController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\user\UserAuth;
@@ -152,6 +153,23 @@ Route::middleware(['auth:sanctum', 'check_block_status'])->group(function () {
     Route::get('/booking/receive', [BookingController::class, 'receives']);
     // get cancel Bookings
     Route::get('/booking/cancel', [BookingController::class, 'bookingCanceled']);
+    // search bookings by day
+    Route::post('/booking/search', [BookingController::class, 'getBookByDay']);
+});
+
+
+
+Route::middleware(['auth:sanctum', 'check_block_status'])->group(function () {
+    // Products requests
+    Route::get('/user/requests', [ProductsRequestsController::class, 'requests'])->middleware('check_admin');
+    // get request by id
+    Route::get('/user/requests/{id}', [ProductsRequestsController::class, 'getReqById']);
+    // add request
+    Route::post('/user/requests', [ProductsRequestsController::class, 'addRequset']);
+    // update request
+    Route::post('/user/requests/{id}', [ProductsRequestsController::class, 'updateRequset']);
+    // delete request
+    Route::delete('/user/requests/{id}', [ProductsRequestsController::class, 'deleteRequset']);
 });
 
 

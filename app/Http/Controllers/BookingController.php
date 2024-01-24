@@ -214,4 +214,24 @@ class BookingController extends Controller
         }
         return $bookings;
     }
+
+    // get bookings receive
+    public function getBookByDay(Request $request)
+    {
+        $request->validate([
+            'day' => 'required'
+        ]);
+        $bookings = Booking::where('day', $request->day)->get();
+        if (!$bookings) {
+            return response()->json([
+                'message' => 'There are no reservations on this day'
+            ]);
+        }
+
+        foreach ($bookings as $book) {
+            $book->user = $book->user;
+            $book->item = $book->item;
+        }
+        return $bookings;
+    }
 }
